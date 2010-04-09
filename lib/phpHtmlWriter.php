@@ -4,7 +4,7 @@
  * Simple PHP HTML Writer
  *
  * @tutorial  http://github.com/ornicar/php-html-writer/blob/master/README.markdown
- * @version   0
+ * @version   1.0
  * @author    Thibault Duplessis <thibault.duplessis at gmail dot com>
  * @license   MIT License
  *
