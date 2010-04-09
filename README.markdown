@@ -10,7 +10,7 @@ Create HTML tags and render them efficiently.
 
 ## Why you should use it
 
- - it always generate valid HTML and XHTML code
+ - it always generates valid HTML and XHTML code
  - it makes templates cleaner
  - it's easy to use, fast to execute, fully tested and documented
 
