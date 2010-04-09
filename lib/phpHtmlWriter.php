@@ -89,9 +89,9 @@ class phpHtmlWriter extends phpHtmlWriterConfigurable
   /**
    * Inject another CSS expression parser
    *
-   * @param   phpHtmlWriterCssExpressionParser a parser instance
-   public
-  protected function setCssExpressionParser(phpHtmlWriterCssExpressionParser $cssExpressionParser)
+   * @param phpHtmlWriterCssExpressionParser $cssExpressionParser a parser instance
+   */
+  public function setCssExpressionParser(phpHtmlWriterCssExpressionParser $cssExpressionParser)
   {
     $this->cssExpressionParser = $cssExpressionParser;
   }
