@@ -25,7 +25,7 @@ class phpHtmlWriterCssExpressionParser
 
     $this->fetchId($expression, $data);
 
-    $this->fetchClasses($expression, $data);
+    $this->fetchClass($expression, $data);
 
     return $data;
   }
@@ -77,14 +77,14 @@ class phpHtmlWriterCssExpressionParser
     }
   }
 
-  protected function fetchClasses($expression, &$data)
+  protected function fetchClass($expression, &$data)
   {
     // if we have at least one "."
     if(false !== strpos($expression, '.'))
     {
       preg_match_all('/\.([\w\-]+)/', $expression, $result);
 
-      $data['classes'] = $result[1];
+      $data['class'] = implode(' ', $result[1]);
     }
   }
 

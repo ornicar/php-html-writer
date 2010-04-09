@@ -102,7 +102,7 @@ class phpHtmlWriter extends phpHtmlWriterConfigurable
     {
       throw new InvalidArgumentException('You must provide a tag name');
     }
-    
+
     // extract tag name from attributes
     $tagName = $attributes['tag'];
 
@@ -129,15 +129,22 @@ class phpHtmlWriter extends phpHtmlWriterConfigurable
 
   protected function mergeAttributes(array $attributes1, array $attributes2)
   {
-    // manually merge classes array
-    if(!empty($attributes2['classes']) && isset($attributes1['classes']))
+    // manually merge the class attribute
+    if(isset($attributes1['class']) && isset($attributes2['class']))
     {
-      $attributes2['classes'] = array_merge($attributes1['classes'], $attributes2['classes']);
-      
-      unset($attributes1['classes']);
+      $attributes2['class'] = $this->mergeClasses($attributes1['class'], $attributes2['class']);
+      unset($attributes1['class']);
     }
 
     return array_merge($attributes1, $attributes2);
+  }
+
+  protected function mergeClasses($classes1, $classes2)
+  {
+    return implode(' ', array_unique(array_map('trim', array_merge(
+      str_word_count($classes1, 1, '0123456789-_'),
+      str_word_count($classes2, 1, '0123456789-_')
+    ))));
   }
 
   protected function cleanUserAttributes($attributes)
@@ -152,23 +159,9 @@ class phpHtmlWriter extends phpHtmlWriterConfigurable
       throw new InvalidArgumentException('$attributes must be an array, '.gettype($ttributes).' given');
     }
 
-    // merge class string to classes array
-    if(isset($attributes['class']))
-    {
-      $attributes['classes'] = array_merge(
-        isset($attributes['classes']) ? $attributes['classes'] : array(),
-        explode(' ', $attributes['class'])
-      );
-      
-      unset($attributes['class']);
-    }
-
     foreach($attributes as $name => $value)
     {
-      if('classes' !== $name)
-      {
-        $attributes[$name] = trim((string) $value);
-      }
+      $attributes[$name] = trim((string) $value);
     }
 
     return $attributes;
@@ -177,13 +170,6 @@ class phpHtmlWriter extends phpHtmlWriterConfigurable
   protected function toHtmlAttributes(array $attributes)
   {
     unset($attributes['tag']);
-    
-    // convert classes array to string
-    if (isset($attributes['classes']))
-    {
-      $attributes['class'] = implode(' ', array_unique(array_filter(array_map('trim', $attributes['classes']))));
-      unset($attributes['classes']);
-    }
 
     // convert attributes array to string
     $htmlAttributes = '';

@@ -39,19 +39,19 @@ $tests = array(
   ),
   array(
     'params'  =>  array('p.my_class'),
-    'result'  =>  array('tag' => 'p', 'classes' => array('my_class'))
+    'result'  =>  array('tag' => 'p', 'class' => 'my_class')
   ),
   array(
     'params'  =>  array('p.my_class.another_class'),
-    'result'  =>  array('tag' => 'p', 'classes' => array('my_class', 'another_class'))
+    'result'  =>  array('tag' => 'p', 'class' => 'my_class another_class')
   ),
   array(
     'params'  =>  array('p#my_id.my_class.another_class'),
-    'result'  =>  array('tag' => 'p', 'id' => 'my_id', 'classes' => array('my_class', 'another_class'))
+    'result'  =>  array('tag' => 'p', 'id' => 'my_id', 'class' => 'my_class another_class')
   ),
   array(
     'params'  =>  array(' p#my_id.my_class.another_class '),
-    'result'  =>  array('tag' => 'p', 'id' => 'my_id', 'classes' => array('my_class', 'another_class'))
+    'result'  =>  array('tag' => 'p', 'id' => 'my_id', 'class' => 'my_class another_class')
   ),
   /**
    *  id and classes without element
@@ -62,19 +62,19 @@ $tests = array(
   ),
   array(
     'params'  =>  array('.my_class'),
-    'result'  =>  array('classes' => array('my_class'))
+    'result'  =>  array('class' => 'my_class')
   ),
   array(
     'params'  =>  array('.my_class.another_class'),
-    'result'  =>  array('classes' => array('my_class', 'another_class'))
+    'result'  =>  array('class' => 'my_class another_class')
   ),
   array(
     'params'  =>  array('#my_id.my_class.another_class'),
-    'result'  =>  array('id' => 'my_id', 'classes' => array('my_class', 'another_class'))
+    'result'  =>  array('id' => 'my_id', 'class' => 'my_class another_class')
   ),
   array(
     'params'  =>  array(' #my_id.my_class.another_class '),
-    'result'  =>  array('id' => 'my_id', 'classes' => array('my_class', 'another_class'))
+    'result'  =>  array('id' => 'my_id', 'class' => 'my_class another_class')
   )
 );
 
