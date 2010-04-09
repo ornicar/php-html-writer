@@ -10,24 +10,16 @@ class phpHtmlWriterCssExpressionParser
 {
 
   /**
-   * Entry point of the class, parse a CSS expression
+   * parse a CSS expression and return the HTML tag and attributes
    *
    * @param   string    $string       the CSS expression like "div#my_id.my_class"
-   * @return  array                   the parsed attributes
+   * @return  array                   array(string HTMl tag, array HTML attributes)
    */
   public function parse($expression)
   {
     $expression = $this->cleanExpression($expression);
     
-    $data       = array();
-
-    $this->fetchTag($expression, $data);
-
-    $this->fetchId($expression, $data);
-
-    $this->fetchClass($expression, $data);
-
-    return $data;
+    return array($this->parseTag($expression), $this->parseAttributes($expression));
   }
 
   protected function cleanExpression($expression)
@@ -49,7 +41,7 @@ class phpHtmlWriterCssExpressionParser
     return $expression;
   }
 
-  protected function fetchTag($expression, &$data)
+  protected function parseTag($expression)
   {
     if('#' !== $expression{0} && '.' !== $expression{0})
     {
@@ -57,35 +49,37 @@ class phpHtmlWriterCssExpressionParser
 
       if (isset($result[1]))
       {
-        $data['tag'] = $result[1];
+        return $result[1];
       }
     }
+
+    return null;
   }
 
-  protected function fetchId($expression, &$data)
+  protected function parseAttributes($expression)
   {
-    // if we have a "#"
+    $attributes = array();
+
+    // fetch the id
     if (false !== strpos($expression, '#'))
     {
-      // fetch id
       preg_match('/#([\w\-]*)/', $expression, $result);
 
       if (isset($result[1]))
       {
-        $data['id'] = $result[1];
+        $attributes['id'] = $result[1];
       }
     }
-  }
-
-  protected function fetchClass($expression, &$data)
-  {
-    // if we have at least one "."
+    
+    // fetch the classes
     if(false !== strpos($expression, '.'))
     {
       preg_match_all('/\.([\w\-]+)/', $expression, $result);
 
-      $data['class'] = implode(' ', $result[1]);
+      $attributes['class'] = implode(' ', $result[1]);
     }
+
+    return $attributes;
   }
 
 }

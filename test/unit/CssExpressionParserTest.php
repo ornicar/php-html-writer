@@ -7,13 +7,13 @@ $tests = array(
   /**
    *  empty elements
    */
-  array(                                  // one test
-    'params'  =>  array('div'),           // ->parse() parameters
-    'result'  =>  array('tag' => 'div')   // expected result
+  array(                                                          // one test
+    'params'  =>  array('div'),                                   // ->parse() parameters
+    'result'  =>  array('div', array())  // expected result
   ),
   array(
     'params'  =>  array(' input '),
-    'result'  =>  array('tag' => 'input')
+    'result'  =>  array('input', array())
   ),
   /**
    *  invalid expressions
@@ -35,46 +35,46 @@ $tests = array(
    */
   array(
     'params'  =>  array('p#my_id'),
-    'result'  =>  array('tag' => 'p', 'id' => 'my_id')
+    'result'  =>  array('p', array('id' => 'my_id'))
   ),
   array(
     'params'  =>  array('p.my_class'),
-    'result'  =>  array('tag' => 'p', 'class' => 'my_class')
+    'result'  =>  array('p', array('class' => 'my_class'))
   ),
   array(
     'params'  =>  array('p.my_class.another_class'),
-    'result'  =>  array('tag' => 'p', 'class' => 'my_class another_class')
+    'result'  =>  array('p', array('class' => 'my_class another_class'))
   ),
   array(
     'params'  =>  array('p#my_id.my_class.another_class'),
-    'result'  =>  array('tag' => 'p', 'id' => 'my_id', 'class' => 'my_class another_class')
+    'result'  =>  array('p', array('id' => 'my_id', 'class' => 'my_class another_class'))
   ),
   array(
     'params'  =>  array(' p#my_id.my_class.another_class '),
-    'result'  =>  array('tag' => 'p', 'id' => 'my_id', 'class' => 'my_class another_class')
+    'result'  =>  array('p', array('id' => 'my_id', 'class' => 'my_class another_class'))
   ),
   /**
    *  id and classes without element
    */
   array(
     'params'  =>  array('#my_id'),
-    'result'  =>  array('id' => 'my_id')
+    'result'  =>  array(null, array('id' => 'my_id'))
   ),
   array(
     'params'  =>  array('.my_class'),
-    'result'  =>  array('class' => 'my_class')
+    'result'  =>  array(null, array('class' => 'my_class'))
   ),
   array(
     'params'  =>  array('.my_class.another_class'),
-    'result'  =>  array('class' => 'my_class another_class')
+    'result'  =>  array(null, array('class' => 'my_class another_class'))
   ),
   array(
     'params'  =>  array('#my_id.my_class.another_class'),
-    'result'  =>  array('id' => 'my_id', 'class' => 'my_class another_class')
+    'result'  =>  array(null, array('id' => 'my_id', 'class' => 'my_class another_class'))
   ),
   array(
     'params'  =>  array(' #my_id.my_class.another_class '),
-    'result'  =>  array('id' => 'my_id', 'class' => 'my_class another_class')
+    'result'  =>  array(null, array('id' => 'my_id', 'class' => 'my_class another_class'))
   )
 );
 
