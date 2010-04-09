@@ -32,11 +32,6 @@ class phpHtmlWriterAttributeArrayParser extends phpHtmlWriterConfigurable
       return array();
     }
 
-    if(!is_array($attributes))
-    {
-      throw new InvalidArgumentException('$attributes must be an array, '.gettype($attributes).' given');
-    }
-
     foreach($attributes as $name => $value)
     {
       $attributes[$name] = $this->processAttribute($name, $value);

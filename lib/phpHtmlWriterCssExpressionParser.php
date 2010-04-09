@@ -18,6 +18,11 @@ class phpHtmlWriterCssExpressionParser
   public function parse($expression)
   {
     $expression = $this->cleanExpression($expression);
+
+    if (empty($expression))
+    {
+      return array(null, array());
+    }
     
     return array($this->parseTag($expression), $this->parseAttributes($expression));
   }
@@ -28,15 +33,14 @@ class phpHtmlWriterCssExpressionParser
     {
       throw new InvalidArgumentException('The CSS expression must be a string, '.gettype($expression).' given');
     }
-    
-    $originalExpression = $expression;
-    
-    $expression = preg_replace('/^([\w|-|\#|\.]+)/i', '$1', trim($originalExpression));
 
-    if (empty($expression))
+    // remove eventual inline attributes
+    if(false !== strpos($expression, '='))
     {
-      throw new InvalidArgumentException('The CSS expression "'.$originalExpression.'" is not valid');
+      $expression = preg_replace('/[^|\s][\w|-]+=.*$/i', '', str_replace(array('"', '\''), '', $expression));
     }
+
+    $expression = trim($expression);
 
     return $expression;
   }

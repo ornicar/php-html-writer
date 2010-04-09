@@ -20,7 +20,7 @@ function php_html_writer_run_tests(lime_test $t, array $tests, $callable)
         $t->is_deeply(
           $result,
           $expectedResult,
-          '"'.$parameters[0].'" '.str_replace("\n", '', var_export($expectedResult, true))
+          '"'.str_replace('"', '\'', $parameters[0]).'" '.str_replace("\n", '', var_export($expectedResult, true))
         );
       }
     }
@@ -29,7 +29,7 @@ function php_html_writer_run_tests(lime_test $t, array $tests, $callable)
       $exceptionClass = get_class($exception);
 
       $message = sprintf('"%s" throws a %s: %s',
-        isset($parameters[0]) ? (string) $parameters[0] : 'NULL',
+        isset($parameters[0]) ? str_replace('"', '\'', (string) $parameters[0]) : 'NULL',
         $exceptionClass,
         $exception->getMessage()
       );

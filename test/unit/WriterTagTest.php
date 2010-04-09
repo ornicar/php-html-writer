@@ -135,6 +135,33 @@ $tests = array(
   array(
     'params'  =>  array('a#my_id.my_class.another_class', array('class' => 'added_class other_added_class my_class', 'href' => 'http://diem-project.org/', 'title' => 'my title')),
     'result'  =>  '<a id="my_id" class="my_class another_class added_class other_added_class" href="http://diem-project.org/" title="my title"></a>'
+  ),
+  /**
+   * Elements inline attribute
+   */
+  array(
+    'params'  =>  array('a href="http://diem-project.org/"', 'some content'),
+    'result'  =>  '<a href="http://diem-project.org/">some content</a>'
+  ),
+  array(
+    'params'  =>  array('a class=my_class', 'some content'),
+    'result'  =>  '<a class="my_class">some content</a>'
+  ),
+  array(
+    'params'  =>  array('a#my_id.my_class.another_class href="http://diem-project.org/"'),
+    'result'  =>  '<a id="my_id" class="my_class another_class" href="http://diem-project.org/"></a>'
+  ),
+  array(
+    'params'  =>  array('a#my_id.my_class.another_class id=changed_id href="http://diem-project.org/"'),
+    'result'  =>  '<a id="changed_id" class="my_class another_class" href="http://diem-project.org/"></a>'
+  ),
+  array(
+    'params'  =>  array('a#my_id.my_class.another_class class="added_class other_added_class" href="http://diem-project.org/"'),
+    'result'  =>  '<a id="my_id" class="my_class another_class added_class other_added_class" href="http://diem-project.org/"></a>'
+  ),
+  array(
+    'params'  =>  array('a#my_id.my_class.another_class class="added_class other_added_class my_class" href="http://diem-project.org/" title="my title"', 'some content'),
+    'result'  =>  '<a id="my_id" class="my_class another_class added_class other_added_class" href="http://diem-project.org/" title="my title">some content</a>'
   )
 );
 

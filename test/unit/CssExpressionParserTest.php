@@ -5,30 +5,33 @@ require_once dirname(__FILE__).'/phpHtmlWriterTestHelper.php';
 
 $tests = array(
   /**
-   *  empty elements
-   */
-  array(                                                          // one test
-    'params'  =>  array('div'),                                   // ->parse() parameters
-    'result'  =>  array('div', array())  // expected result
-  ),
-  array(
-    'params'  =>  array(' input '),
-    'result'  =>  array('input', array())
-  ),
-  /**
    *  invalid expressions
    */
-  array(
-    'params'  =>  array(null),
-    'throws'  =>  'InvalidArgumentException'
-  ),
-  array(
-    'params'  =>  array(' '),
-    'throws'  =>  'InvalidArgumentException'
+  array(                                      // one test
+    'params'  =>  array(null),                // ->parse() parameters
+    'throws'  =>  'InvalidArgumentException'  // expected result
   ),
   array(
     'params'  =>  array(array()),
     'throws'  =>  'InvalidArgumentException'
+  ),
+  /**
+   * empty expression
+   */
+  array(
+    'params'  =>  array(' '),
+    'result'  =>  array(null, array())
+  ),
+  /**
+   *  empty elements
+   */
+  array(
+    'params'  =>  array('div'),
+    'result'  =>  array('div', array())
+  ),
+  array(
+    'params'  =>  array(' input '),
+    'result'  =>  array('input', array())
   ),
   /**
    *  elements with id and classes
@@ -54,28 +57,74 @@ $tests = array(
     'result'  =>  array('p', array('id' => 'my_id', 'class' => 'my_class another_class'))
   ),
   /**
-   *  id and classes without element
+   *  elements with id and classes and inline attributes
    */
   array(
-    'params'  =>  array('#my_id'),
+    'params'  =>  array('p#my_id rel=my_rel title="my title"'),
+    'result'  =>  array('p', array('id' => 'my_id'))
+  ),
+  array(
+    'params'  =>  array('p.my_class rel=my_rel title="my title"'),
+    'result'  =>  array('p', array('class' => 'my_class'))
+  ),
+  array(
+    'params'  =>  array('p.my_class.another_class rel=my_rel title="my title"'),
+    'result'  =>  array('p', array('class' => 'my_class another_class'))
+  ),
+  array(
+    'params'  =>  array('p#my_id.my_class.another_class rel=my_rel title="my title"'),
+    'result'  =>  array('p', array('id' => 'my_id', 'class' => 'my_class another_class'))
+  ),
+  array(
+    'params'  =>  array(' p#my_id.my_class.another_class  rel=my_rel  title="my title" '),
+    'result'  =>  array('p', array('id' => 'my_id', 'class' => 'my_class another_class'))
+  ),
+  /**
+   *  elements with only inline attributes
+   */
+  array(
+    'params'  =>  array('p rel=my_rel title="my title"'),
+    'result'  =>  array('p', array())
+  ),
+  array(
+    'params'  =>  array(' p  rel=my_rel  title="my title" '),
+    'result'  =>  array('p', array())
+  ),
+  /**
+   *  id and classes without element but with inline attributes
+   */
+  array(
+    'params'  =>  array('#my_id rel=my_rel title="my title"'),
     'result'  =>  array(null, array('id' => 'my_id'))
   ),
   array(
-    'params'  =>  array('.my_class'),
+    'params'  =>  array('.my_class rel=my_rel title="my title"'),
     'result'  =>  array(null, array('class' => 'my_class'))
   ),
   array(
-    'params'  =>  array('.my_class.another_class'),
+    'params'  =>  array('.my_class.another_class rel=my_rel title="my title"'),
     'result'  =>  array(null, array('class' => 'my_class another_class'))
   ),
   array(
-    'params'  =>  array('#my_id.my_class.another_class'),
+    'params'  =>  array('#my_id.my_class.another_class rel=my_rel title="my title"'),
     'result'  =>  array(null, array('id' => 'my_id', 'class' => 'my_class another_class'))
   ),
   array(
-    'params'  =>  array(' #my_id.my_class.another_class '),
+    'params'  =>  array(' #my_id.my_class.another_class   rel=my_rel  title="my title" '),
     'result'  =>  array(null, array('id' => 'my_id', 'class' => 'my_class another_class'))
-  )
+  ),
+
+  /**
+   * pure inline attributes
+   */
+  array(
+    'params'  =>  array('rel=my_rel title="my title"'),
+    'result'  =>  array(null, array())
+  ),
+  array(
+    'params'  =>  array('  rel=my_rel  title="my title" '),
+    'result'  =>  array(null, array())
+  ),
 );
 
 $t = new lime_test(count($tests));

@@ -21,7 +21,12 @@ class phpHtmlWriter extends phpHtmlWriterConfigurable
    * @var phpHtmlWriterCssExpressionParser  the CSS expression parser instance
    */
   protected $cssExpressionParser;
-  
+
+  /**
+   * @var phpHtmlWriterAttributeStringParser the attribute string parser instance
+   */
+  protected $attributeStringParser;
+
   /**
    * @var phpHtmlWriterAttributeArrayParser the attribute array parser instance
    */
@@ -72,19 +77,19 @@ class phpHtmlWriter extends phpHtmlWriterConfigurable
     }
 
     // get the tag and attributes from the CSS expression
-    list($tag, $cssAttributes) = $this->getCssExpressionParser()->parse($cssExpression);
+    list($tag, $attrs) = $this->getCssExpressionParser()->parse($cssExpression);
 
-    // get the additional HTML attributes passed by the htmlAttributes array
-    $attributes = $this->getAttributeArrayParser()->parse($attributes);
+    // merge with the additional HTML attributes passed by the css expression as inline attributes
+    $attrs = $this->mergeAttributes($attrs, $this->getAttributeStringParser()->parse($cssExpression));
 
-    // merge CSS attributes with the attributes array
-    $attributes = $this->mergeAttributes($cssAttributes, $attributes);
+    // merge with the additional HTML attributes passed by the attributes array
+    $attrs = $this->mergeAttributes($attrs, $this->getAttributeArrayParser()->parse($attributes));
 
     /**
      * element object that can be rendered with __toString()
      * @var phpHtmlWriterElement
      */
-    $element = new $this->options['element_class']($tag, $attributes, $content);
+    $element = new $this->options['element_class']($tag, $attrs, $content);
 
     return $element;
   }
@@ -116,6 +121,34 @@ class phpHtmlWriter extends phpHtmlWriterConfigurable
   }
 
   /**
+   * Get the attribute string parser instance
+   *
+   * @return  phpHtmlWriterAttributeStringParser  the attribute string parser
+   */
+  public function getAttributeStringParser()
+  {
+    if(null === $this->attributeStringParser)
+    {
+      require_once(dirname(__FILE__).'/phpHtmlWriterAttributeStringParser.php');
+      $this->attributeStringParser = new phpHtmlWriterAttributeStringParser(array(
+        'encoding' => $this->options['encoding']
+      ));
+    }
+
+    return $this->attributeStringParser;
+  }
+
+  /**
+   * Inject another attribute array parser instance
+   *
+   * @param phpHtmlWriterAttributeStringParser $attributeStringParser an attribute string parser instance
+   */
+  public function setAttributeStringParser(phpHtmlWriterAttributeArrayParser $attributeStringParser)
+  {
+    $this->attributeStringParser = $attributeStringParser;
+  }
+
+  /**
    * Get the attribute array parser instance
    *
    * @return  phpHtmlWriterAttributeArrayParser  the attribute array parser
@@ -136,7 +169,7 @@ class phpHtmlWriter extends phpHtmlWriterConfigurable
   /**
    * Inject another attribute array parser instance
    *
-   * @param phpHtmlWriterCssExpressionParser $cssExpressionParser a, attribute array parser instance
+   * @param phpHtmlWriterAttributeArrayParser $attributeArrayParser an attribute array parser instance
    */
   public function setAttributeArrayParser(phpHtmlWriterAttributeArrayParser $attributeArrayParser)
   {
