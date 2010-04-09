@@ -35,7 +35,7 @@ $tests = array(
   ),
   array(
     'params'  =>  array('rel= title="my title"'),
-    'result'  =>  array('rel' => null, 'title' => 'my title')
+    'result'  =>  array('rel' => '', 'title' => 'my title')
   ),
   array(
     'params'  =>  array('  rel="my_rel"   title="my title"  '),

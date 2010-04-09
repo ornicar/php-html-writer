@@ -7,17 +7,8 @@
  * @license   MIT License
  */
 
-require_once(dirname(__FILE__).'/phpHtmlWriterConfigurable.php');
-
-class phpHtmlWriterAttributeArrayParser extends phpHtmlWriterConfigurable
+class phpHtmlWriterAttributeArrayParser
 {
-  /**
-   * @var array                   the parser options
-   */
-  protected $options = array(
-    // used by htmlentities
-    'encoding'                => 'UTF-8'
-  );
 
   /**
    * Entry point of the class, parse an attribute array
@@ -29,20 +20,12 @@ class phpHtmlWriterAttributeArrayParser extends phpHtmlWriterConfigurable
   {
     if(empty($attributes))
     {
-      return array();
+      return $attributes;
     }
 
-    foreach($attributes as $name => $value)
-    {
-      $attributes[$name] = $this->processAttribute($name, $value);
-    }
+    $attributes = array_map('trim', $attributes);
 
     return $attributes;
-  }
-
-  protected function processAttribute($name, $value)
-  {
-    return htmlentities(trim((string) $value), ENT_COMPAT, $this->options['encoding']);
   }
 
 }

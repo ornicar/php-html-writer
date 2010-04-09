@@ -4,9 +4,14 @@ Create HTML tags and render them efficiently.
 
 ## Overview
 
-    $html->tag('div', 'some content') // <div>some content</div>
-    $html->tag('div#my_id.my_class') // <div id="my_id" class="my_class"></div>
-    $html->tag('a.my_class rel=nofollow', 'some content') // <a class="my_class" rel="nofollow">some content</a>
+    $html->tag('div', 'some content')
+    // returns <div>some content</div>
+
+    $html->tag('div#my_id.my_class')
+    // returns <div id="my_id" class="my_class"></div>
+
+    $html->tag('a.my_class rel=nofollow', 'some content')
+    // returns <a class="my_class" rel="nofollow">some content</a>
 
 ### Why you should use it
 

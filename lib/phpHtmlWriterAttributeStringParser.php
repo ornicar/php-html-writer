@@ -7,17 +7,8 @@
  * @license   MIT License
  */
 
-require_once(dirname(__FILE__).'/phpHtmlWriterConfigurable.php');
-
-class phpHtmlWriterAttributeStringParser extends phpHtmlWriterConfigurable
+class phpHtmlWriterAttributeStringParser
 {
-  /**
-   * @var array                   the parser options
-   */
-  protected $options = array(
-    // used by htmlentities
-    'encoding'                => 'UTF-8'
-  );
 
   /**
    * Entry point of the class, parse an attribute array
@@ -41,7 +32,6 @@ class phpHtmlWriterAttributeStringParser extends phpHtmlWriterConfigurable
   }
   
   /**
-   * Copied from symfony 1.4 http://symfony-project.org/
    * Converts string to array
    *
    * @param  string $string  the value to convert to array
@@ -50,6 +40,7 @@ class phpHtmlWriterAttributeStringParser extends phpHtmlWriterConfigurable
    */
   protected function stringToArray($string)
   {
+    // regex credits: symfony 1.4 http://symfony-project.org/
     preg_match_all('/
       \s*(\w+)              # key                               \\1
       \s*=\s*               # =
@@ -64,37 +55,10 @@ class phpHtmlWriterAttributeStringParser extends phpHtmlWriterConfigurable
     $attributes = array();
     foreach ($matches as $val)
     {
-      $attributes[$val[1]] = $this->literalize($val[3]);
+      $attributes[$val[1]] = $val[3];
     }
 
     return $attributes;
-  }
-
-  /**
-   * Copied from symfony 1.4 http://symfony-project.org/
-   * With some modifications
-   * Finds the type of the passed value, returns the value as the new type.
-   *
-   * @param  string $value
-   *
-   * @return mixed
-   */
-  protected function literalize($value)
-  {
-    if (empty($value))
-    {
-      $value = null;
-    }
-    elseif (in_array($value, array('true', 'on', '+', 'yes')))
-    {
-      $value = true;
-    }
-    elseif (in_array($value, array('false', 'off', '-', 'no')))
-    {
-      $value = false;
-    }
-
-    return $value;
   }
 
 }
