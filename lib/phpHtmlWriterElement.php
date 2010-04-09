@@ -49,7 +49,7 @@ class phpHtmlWriterElement
   }
 
   /**
-   * Render the tag
+   * Render the element
    * @return  string  valid XHTML representation of the element
    */
   public function render()
@@ -67,6 +67,34 @@ class phpHtmlWriterElement
     }
 
     return $html;
+  }
+
+  /**
+   * Open the element
+   * @return  string  valid XHTML representation of the open tag of the element
+   */
+  public function renderOpen()
+  {
+    if($this->isSelfClosing())
+    {
+      throw new LogicException($this->tag.' is a self-closing tag and not be opened - use->tag() instead');
+    }
+    
+    return '<'.$this->getTag().$this->getAttributesAsString().'>';
+  }
+
+  /**
+   * Close the element
+   * @return  string  valid XHTML representation of the close tag of the element
+   */
+  public function renderClose()
+  {
+    if($this->isSelfClosing())
+    {
+      throw new LogicException($this->tag.' is a self-closing tag and not be closed - use->tag() instead');
+    }
+
+    return '</'.$this->getTag().'>';
   }
 
   /**

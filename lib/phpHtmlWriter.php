@@ -58,9 +58,9 @@ class phpHtmlWriter extends phpHtmlWriterConfigurable
    * $view->tag('a', array('title' => 'my title'), 'text content')
    *
    * @param   string  $cssExpression      a valid CSS expression like "div.my_class"
-   * @param   mixed   $htmlAttributes     additional HTML attributes, or tag content
+   * @param   mixed   $attributes         additional HTML attributes, or tag content
    * @param   string  $content            tag content if attributes are provided
-   * @return  phpHtmlWriterTag            a tag to be rendered
+   * @return  string                      the rendered tag
    */
   public function tag($cssExpression, $attributes = array(), $content = null)
   {
@@ -91,7 +91,62 @@ class phpHtmlWriter extends phpHtmlWriterConfigurable
      */
     $element = new $this->options['element_class']($tag, $attrs, $content);
 
-    return $element;
+    return $element->render();
+  }
+
+  /**
+   * Open a HTML tag
+   *
+   * Examples:
+   * $view->open('p')
+   * $view->open('div#my_id.my_class')
+   * $view->open('a', array('title' => 'my title'))
+   *
+   * @param   string  $cssExpression      a valid CSS expression like "div.my_class"
+   * @param   array   $attributes         additional HTML attributes
+   * @return  string                      the rendered opening tag
+   */
+  public function open($cssExpression, array $attributes = array())
+  {
+    // get the tag and attributes from the CSS expression
+    list($tag, $attrs) = $this->getCssExpressionParser()->parse($cssExpression);
+
+    // merge with the additional HTML attributes passed by the css expression as inline attributes
+    $attrs = $this->mergeAttributes($attrs, $this->getAttributeStringParser()->parse($cssExpression));
+
+    // merge with the additional HTML attributes passed by the attributes array
+    $attrs = $this->mergeAttributes($attrs, $this->getAttributeArrayParser()->parse($attributes));
+
+    /**
+     * element object that can be rendered with __toString()
+     * @var phpHtmlWriterElement
+     */
+    $element = new $this->options['element_class']($tag, $attrs);
+
+    return $element->renderOpen();
+  }
+
+  /**
+   * Close a HTML tag
+   *
+   * Examples:
+   * $view->close('p')
+   *
+   * @param   string  $tagName      the tag name to close
+   * @return  string                the rendered closing tag
+   */
+  public function close($tagName)
+  {
+    // remove eventual css expressions or inline attributes
+    list($tag, $attributes) = $this->getCssExpressionParser()->parse($tagName);
+    
+    /**
+     * element object that can be rendered with __toString()
+     * @var phpHtmlWriterElement
+     */
+    $element = new $this->options['element_class']($tag);
+
+    return $element->renderClose();
   }
 
   /**
@@ -194,13 +249,5 @@ class phpHtmlWriter extends phpHtmlWriterConfigurable
       str_word_count($classes1, 1, '0123456789-_'),
       str_word_count($classes2, 1, '0123456789-_')
     ))));
-  }
-
-  /**
-   * Test method - use tag() instead
-   */
-  public function renderTag($cssExpression, $attributes = array(), $content = null)
-  {
-    return $this->tag($cssExpression, $attributes, $content)->render();
   }
 }
