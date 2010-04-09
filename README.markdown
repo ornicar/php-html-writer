@@ -22,11 +22,11 @@ Create HTML tags and render them efficiently.
 
 ### Render tags
 
-#### Simple tags
-
 Use the ->tag() method to create a tag element.
 The first argument is the HTML tag name, like div or span.
 The second argument is the tag content.
+
+#### Simple tags
 
     $view->tag('div')
     <div></div>
@@ -46,7 +46,7 @@ It allows to specify very quickly the tag id and classes
     <div class="my_class"></div>
 
     $view->tag('div#my_id.my_class.another_class')
-    <div id="my_id" class="my_class another class"></div>
+    <div id="my_id" class="my_class another_class"></div>
 
 #### Inline attributes
 
@@ -62,10 +62,13 @@ It allows to specify every HTML attribute like href or title.
     $view->tag('span lang=es', 'Vamos a la playa, señor zorro')
     <span lang="es">Vamos a la playa, señor zorro</span>
 
+    $view->tag('input type=text value="my value"')
+    <input type="text" value="my value" />
+
 You can use both CSS expressions and inline attributes:
 
     $view->tag('a#my_id.my_class.another_class href="http://github.com"', 'Github');
-    <a id="my_id" class="my_class another class" href="http://github.com">Github</a>
+    <a id="my_id" class="my_class another_class" href="http://github.com">Github</a>
 
 #### Array attributes
 
@@ -77,5 +80,5 @@ Pass the attributes array as the second argument, and the tag content as the thi
 
 You can use both CSS expressions, inline expressions and array attributes
 
-    $view->tag('a#my_id.my_class rel=nofollow', array('href'=>'http://github.com'), 'GitHub');
-    <a id="my_id" class="my_class another class" rel="nofollow" href="http://github.com">GitHub</a>
+    $view->tag('a#my_id.my_class.another rel=nofollow', array('href'=>'http://github.com'), 'GitHub');
+    <a id="my_id" class="my_class another_class" rel="nofollow" href="http://github.com">GitHub</a>
