@@ -13,21 +13,26 @@
  */
 
 require_once(dirname(__FILE__).'/phpHtmlWriterConfigurable.php');
+require_once(dirname(__FILE__).'/phpHtmlWriterElement.php');
 
 class phpHtmlWriter extends phpHtmlWriterConfigurable
 {
   /**
-   * @var phpHtmlWriterCssParser  the CSS expression parser instance
+   * @var phpHtmlWriterCssExpressionParser  the CSS expression parser instance
    */
   protected $cssExpressionParser;
+  
+  /**
+   * @var phpHtmlWriterAttributeArrayParser the attribute array parser instance
+   */
+  protected $attributeArrayParser;
   
   /**
    * @var array                   the writer options
    */
   protected $options = array(
-    'encoding'               => 'UTF-8',
-    // from the W3 Schools reference site: http://www.w3schools.com/tags/ref_byfunc.asp
-    'self_closing_elements'  => array('area', 'base', 'basefont', 'br', 'hr', 'input', 'img', 'link', 'meta')
+    'element_class'           => 'phpHtmlWriterElement',
+    'encoding'                => 'UTF-8' // used by htmlentities
   );
 
   /**
@@ -47,27 +52,41 @@ class phpHtmlWriter extends phpHtmlWriterConfigurable
    * $view->tag('div', $view->tag('p', 'textual content'))
    * $view->tag('a', array('title' => 'my title'), 'text content')
    *
-   * @param string  $cssExpression      a valid CSS expression like "div.my_class"
-   * @param mixed   $attributes         additional HTML attributes, or tag content
-   * @param string  $content            tag content if attributes are provided
+   * @param   string  $cssExpression      a valid CSS expression like "div.my_class"
+   * @param   mixed   $htmlAttributes     additional HTML attributes, or tag content
+   * @param   string  $content            tag content if attributes are provided
+   * @return  phpHtmlWriterTag            a tag to be rendered
    */
   public function tag($cssExpression, $attributes = array(), $content = null)
   {
-    // use $attributes as $content if needed
+    /**
+     * use $attributes as $content if needed
+     * allow to use 2 or 3 parameters when calling the method:
+     * ->tag('div', 'content')
+     * ->tag('div', array('id' => 'an_id'), 'content')
+     */
     if(empty($content) && !empty($attributes) && !is_array($attributes))
     {
       $content    = $attributes;
       $attributes = array();
     }
-    
-    $attributes = $this->mergeAttributes(
-      $this->getCssExpressionParser()->parse($cssExpression),
-      $this->cleanUserAttributes($attributes)
-    );
 
-    $tag = $this->doRenderTag($attributes, $content);
+    // get the tag and attributes from the CSS expression
+    list($tag, $cssAttributes) = $this->getCssExpressionParser()->parse($cssExpression);
 
-    return $tag;
+    // get the additional HTML attributes passed by the htmlAttributes array
+    $attributes = $this->getAttributeArrayParser()->parse($attributes);
+
+    // merge CSS attributes with the attributes array
+    $attributes = $this->mergeAttributes($cssAttributes, $attributes);
+
+    /**
+     * element object that can be rendered with __toString()
+     * @var phpHtmlWriterElement
+     */
+    $element = new $this->options['element_class']($tag, $attributes, $content);
+
+    return $element;
   }
 
   /**
@@ -96,35 +115,32 @@ class phpHtmlWriter extends phpHtmlWriterConfigurable
     $this->cssExpressionParser = $cssExpressionParser;
   }
 
-  protected function doRenderTag(array $attributes, $content)
+  /**
+   * Get the attribute array parser instance
+   *
+   * @return  phpHtmlWriterAttributeArrayParser  the attribute array parser
+   */
+  public function getAttributeArrayParser()
   {
-    if (empty($attributes['tag']))
+    if(null === $this->attributeArrayParser)
     {
-      throw new InvalidArgumentException('You must provide a tag name');
+      require_once(dirname(__FILE__).'/phpHtmlWriterAttributeArrayParser.php');
+      $this->attributeArrayParser = new phpHtmlWriterAttributeArrayParser(array(
+        'encoding' => $this->options['encoding']
+      ));
     }
 
-    // extract tag name from attributes
-    $tagName = $attributes['tag'];
+    return $this->attributeArrayParser;
+  }
 
-    // convert attributes array to string
-    $htmlAttributes = $this->toHtmlAttributes($attributes);
-
-    // render self-closing element
-    if(in_array($tagName, $this->options['self_closing_elements']))
-    {
-      if(!empty($content))
-      {
-        throw new InvalidArgumentException($tagName.' is a self-closing element, and does not support content');
-      }
-
-      $tag = '<'.$tagName.$htmlAttributes.' />';
-    }
-    else
-    {
-      $tag = '<'.$tagName.$htmlAttributes.'>'.$content.'</'.$tagName.'>';
-    }
-
-    return $tag;
+  /**
+   * Inject another attribute array parser instance
+   *
+   * @param phpHtmlWriterCssExpressionParser $cssExpressionParser a, attribute array parser instance
+   */
+  public function setAttributeArrayParser(phpHtmlWriterAttributeArrayParser $attributeArrayParser)
+  {
+    $this->attributeArrayParser = $attributeArrayParser;
   }
 
   protected function mergeAttributes(array $attributes1, array $attributes2)
@@ -147,37 +163,11 @@ class phpHtmlWriter extends phpHtmlWriterConfigurable
     ))));
   }
 
-  protected function cleanUserAttributes($attributes)
+  /**
+   * Test method - use tag() instead
+   */
+  public function renderTag($cssExpression, $attributes = array(), $content = null)
   {
-    if(empty($attributes))
-    {
-      return array();
-    }
-
-    if(!is_array($attributes))
-    {
-      throw new InvalidArgumentException('$attributes must be an array, '.gettype($ttributes).' given');
-    }
-
-    foreach($attributes as $name => $value)
-    {
-      $attributes[$name] = trim((string) $value);
-    }
-
-    return $attributes;
-  }
-
-  protected function toHtmlAttributes(array $attributes)
-  {
-    unset($attributes['tag']);
-
-    // convert attributes array to string
-    $htmlAttributes = '';
-    foreach ($attributes as $name => $val)
-    {
-      $htmlAttributes .= ' '.$name.'="'.htmlentities($val, ENT_COMPAT, $this->options['encoding']).'"';
-    }
-
-    return $htmlAttributes;
+    return $this->tag($cssExpression, $attributes, $content)->render();
   }
 }

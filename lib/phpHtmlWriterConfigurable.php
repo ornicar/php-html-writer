@@ -5,7 +5,7 @@
  */
 abstract class phpHtmlWriterConfigurable
 {
-  protected $options;
+  protected $options = array();
 
   /**
    * Configures the current object.
