@@ -70,6 +70,32 @@ class phpHtmlWriter extends phpHtmlWriterConfigurable
     return $tag;
   }
 
+  /**
+   * Get the CSS expression parser instance
+   *
+   * @return  phpHtmlWriterCssExpressionParser  the CSS expression parser
+   */
+  public function getCssExpressionParser()
+  {
+    if(null === $this->cssExpressionParser)
+    {
+      require_once(dirname(__FILE__).'/phpHtmlWriterCssExpressionParser.php');
+      $this->cssExpressionParser = new phpHtmlWriterCssExpressionParser();
+    }
+
+    return $this->cssExpressionParser;
+  }
+
+  /**
+   * Inject another CSS expression parser
+   *
+   * @param   phpHtmlWriterCssExpressionParser a parser instance
+   public
+  protected function setCssExpressionParser(phpHtmlWriterCssExpressionParser $cssExpressionParser)
+  {
+    $this->cssExpressionParser = $cssExpressionParser;
+  }
+
   protected function doRenderTag(array $attributes, $content)
   {
     if (empty($attributes['tag']))
@@ -146,22 +172,6 @@ class phpHtmlWriter extends phpHtmlWriterConfigurable
     }
 
     return $attributes;
-  }
-
-  /**
-   * Get the CSS expression parser instance
-   *
-   * @return  phpHtmlWriterCssExpressionParser  the CSS expression parser
-   */
-  public function getCssExpressionParser()
-  {
-    if(null === $this->cssExpressionParser)
-    {
-      require_once(dirname(__FILE__).'/phpHtmlWriterCssExpressionParser.php');
-      $this->cssExpressionParser = new phpHtmlWriterCssExpressionParser();
-    }
-    
-    return $this->cssExpressionParser;
   }
 
   protected function toHtmlAttributes(array $attributes)
