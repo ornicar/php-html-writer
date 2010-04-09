@@ -49,7 +49,7 @@ class phpHtmlWriterCssExpressionParser
   {
     if('#' !== $expression{0} && '.' !== $expression{0})
     {
-      preg_match('/^([^\#|\.]+)/', $expression, $result);
+      preg_match('/^(\w+)/', $expression, $result);
 
       if (isset($result[1]))
       {

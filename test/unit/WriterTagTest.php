@@ -167,4 +167,4 @@ $tests = array(
 
 $t = new lime_test(count($tests));
 
-php_html_writer_run_tests($t, $tests, array(new phpHtmlWriter(), 'renderTag'));
+php_html_writer_run_tests($t, $tests, array(new phpHtmlWriter(), 'tag'));
