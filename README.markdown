@@ -84,6 +84,24 @@ You can use both CSS expressions, inline expressions and array attributes
     echo $html->tag('a#my_id.my_class rel=nofollow', array('href'=>'http://github.com'), 'GitHub');
     <a id="my_id" class="my_class" rel="nofollow" href="http://github.com">GitHub</a>
 
+#### Open and close tags
+
+When you need to render only the opening tag, you can use ->open()
+
+    echo $view->open('div')
+    <div>
+
+    echo $view->open('div#my_id.my_class lang=en')
+    <div id="my_id" class='my_class" lang="en">
+
+    echo $view->open('div#my_id.my_class lang=en', array('title'=>'my title'))
+    <div id="my_id" class='my_class" lang="en" title="my title">
+
+If you just want to close a tag, you can use ->close()
+
+    echo $view->close('div')
+    </div>
+
 #### Nest tags
 
 The content parameter of the ->tag() method accepts anything that can be converted to a string.
