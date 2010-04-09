@@ -4,9 +4,9 @@ Create HTML tags and render them efficiently.
 
 ## Overview
 
-    $view->tag('div', 'some content') // <div>some content</div>
-    $view->tag('div#my_id.my_class') // <div id="my_id" class="my_class"></div>
-    $view->tag('a.my_class title="Social Coding"', 'GitHub') // <a class="my_class" title="Social Coding">GitHub</a>
+    $html->tag('div', 'some content') // <div>some content</div>
+    $html->tag('div#my_id.my_class') // <div id="my_id" class="my_class"></div>
+    $html->tag('a.my_class rel=nofollow', 'some content') // <a class="my_class" rel="nofollow">some content</a>
 
 ## Why you should use it
 
@@ -16,9 +16,10 @@ Create HTML tags and render them efficiently.
 
 ## Usage
 
-### Instanciate a view instance
+### Instanciate an HTML Writer
 
-    $view = new phpHtmlWriter();
+    require_once('/path/to/php-html-writer/lib/phpHtmlWriter.php');
+    $html = new phpHtmlWriter();
 
 ### Render tags
 
@@ -28,10 +29,10 @@ The second argument is the tag content.
 
 #### Simple tags
 
-    $view->tag('div')
+    echo $html->tag('div')
     <div></div>
 
-    $view->tag('p', 'some content')
+    echo $html->tag('p', 'some content')
     <p>some content</p>
 
 #### CSS expressions
@@ -39,13 +40,13 @@ The second argument is the tag content.
 The first argument accepts CSS expressions.
 It allows to specify very quickly the tag id and classes
 
-    $view->tag('div#my_id')
+    echo $html->tag('div#my_id')
     <div id="my_id"></div>
 
-    $view->tag('div.my_class')
+    echo $html->tag('div.my_class')
     <div class="my_class"></div>
 
-    $view->tag('div#my_id.my_class.another_class')
+    echo $html->tag('div#my_id.my_class.another_class')
     <div id="my_id" class="my_class another_class"></div>
 
 #### Inline attributes
@@ -53,21 +54,21 @@ It allows to specify very quickly the tag id and classes
 The first argument also accepts inline attributes.
 It allows to specify every HTML attribute like href or title.
 
-    $view->tag('a href="http://github.com"')
+    echo $html->tag('a href="http://github.com"')
     <a href="http://github.com"></a>
 
-    $view->tag('a rel=nofollow href="http://github.com" title="Social Coding"')
+    echo $html->tag('a rel=nofollow href="http://github.com" title="Social Coding"')
     <a rel="nofollow" href="http://github.com" title="Social Coding"></a>
 
-    $view->tag('span lang=es', 'Vamos a la playa, señor zorro')
+    echo $html->tag('span lang=es', 'Vamos a la playa, señor zorro')
     <span lang="es">Vamos a la playa, señor zorro</span>
 
-    $view->tag('input type=text value="my value"')
+    echo $html->tag('input type=text value="my value"')
     <input type="text" value="my value" />
 
 You can use both CSS expressions and inline attributes:
 
-    $view->tag('a#my_id.my_class.another_class href="http://github.com"', 'Github');
+    echo $html->tag('a#my_id.my_class.another_class href="http://github.com"', 'Github');
     <a id="my_id" class="my_class another_class" href="http://github.com">Github</a>
 
 #### Array attributes
@@ -75,10 +76,28 @@ You can use both CSS expressions and inline attributes:
 If you prefer, you can pass HTML attributes like href and title with an array.
 Pass the attributes array as the second argument, and the tag content as the third argument
 
-    $view->tag('a', array('href'=>'http://github.com'), 'GitHub');
+    echo $html->tag('a', array('href'=>'http://github.com'), 'GitHub');
     <a href="http://github.com">GitHub</a>
 
 You can use both CSS expressions, inline expressions and array attributes
 
-    $view->tag('a#my_id.my_class.another rel=nofollow', array('href'=>'http://github.com'), 'GitHub');
-    <a id="my_id" class="my_class another_class" rel="nofollow" href="http://github.com">GitHub</a>
+    echo $html->tag('a#my_id.my_class rel=nofollow', array('href'=>'http://github.com'), 'GitHub');
+    <a id="my_id" class="my_class" rel="nofollow" href="http://github.com">GitHub</a>
+
+#### Nest tags
+
+The content parameter of the ->tag() method accepts anything that can be converted to a string.
+It includes, of course, other tags.
+
+    echo $html->tag('div.my_class', $html->tag('p', 'some content'))
+    <div class="my_class"><p>some content</p></div>
+
+### Shortcuts functions
+
+If you think the actual syntax is too verbose, you should consider using shortcuts.
+The phpHtmlWriterHelper.php file contains predefined shortcuts functions.
+
+    include('/path/to/php-html-writer/lib/phpHtmlWriterHelper.php');
+
+    echo tag('div#my_id.my_class', 'some content');
+    <div id="my_id" class="my_class">some content</div>
