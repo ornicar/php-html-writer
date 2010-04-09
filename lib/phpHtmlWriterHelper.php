@@ -16,3 +16,21 @@ function tag($cssExpression, $attributes = array(), $content = null)
   global $phpHtmlWriterInstance;
   return $phpHtmlWriterInstance->tag($cssExpression, $attributes, $content);
 }
+
+/**
+ * @see phpHtmlWriter::open()
+ */
+function open($cssExpression, array $attributes = array())
+{
+  global $phpHtmlWriterInstance;
+  return $phpHtmlWriterInstance->open($cssExpression, $attributes);
+}
+
+/**
+ * @see phpHtmlWriter::close()
+ */
+function close($tagName)
+{
+  global $phpHtmlWriterInstance;
+  return $phpHtmlWriterInstance->close($tagName);
+}
