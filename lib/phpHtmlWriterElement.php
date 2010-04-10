@@ -26,16 +26,23 @@ class phpHtmlWriterElement
   protected $content;
 
   /**
+   * the character encoding
+   * @var string
+   */
+  protected $encoding;
+
+  /**
    * from the W3 Schools reference site: http://www.w3schools.com/tags/ref_byfunc.asp
    * @var array
    */
   protected static $selfClosingTags = array('area', 'base', 'basefont', 'br', 'hr', 'input', 'img', 'link', 'meta');
 
-  public function __construct($tag, array $attributes = array(), $content = '')
+  public function __construct($tag, array $attributes = array(), $content = '', $encoding = 'UTF-8')
   {
     $this->tag        = $tag;
     $this->attributes = $attributes;
     $this->content    = (string) $content;
+    $this->encoding   = $encoding;
 
     if(empty($this->tag))
     {
@@ -134,6 +141,24 @@ class phpHtmlWriterElement
   }
 
   /**
+   * Get the character encoding
+   * @return  string  the current character encoding
+   */
+  public function getEncoding()
+  {
+    return $this->encoding;
+  }
+
+  /**
+   * Set the character encoding
+   * @param  string  $encoding  the new character encoding
+   */
+  public function setEncoding($encoding)
+  {
+    $this->encoding = $encoding;
+  }
+
+  /**
    * Get a HTML valid string containing the element attributes
    * @return  string  HTML representation of the element attributes
    */
@@ -142,9 +167,11 @@ class phpHtmlWriterElement
     // convert options array to string
     $string = '';
 
-    foreach($this->getAttributes() as $name => $val)
+    foreach($this->getAttributes() as $name => $value)
     {
-      $string .= ' '.$name.'="'.$val.'"';
+      $escapedValue = htmlentities($value, ENT_COMPAT, $this->encoding);
+      
+      $string .= ' '.$name.'="'.$escapedValue.'"';
     }
 
     return $string;

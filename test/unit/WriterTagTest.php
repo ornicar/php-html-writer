@@ -61,6 +61,10 @@ $tests = array(
     'params'  =>  array(' p#my_id.my_class.another_class '),
     'result'  =>  '<p id="my_id" class="my_class another_class"></p>'
   ),
+  array(
+    'params'  =>  array('p#my_id.my_class.another_class'),
+    'result'  =>  '<p id="my_id" class="my_class another_class"></p>'
+  ),
   /**
    * Elements with content
    */
@@ -109,6 +113,17 @@ $tests = array(
   array(
     'params'  =>  array('a#my_id.my_class.another_class', array('href' => 'http://diem-project.org/')),
     'result'  =>  '<a id="my_id" class="my_class another_class" href="http://diem-project.org/"></a>'
+  ),
+  /**
+   * Elements with parameters that need html escaping
+   */
+  array(
+    'params'  =>  array('a', array('title' => 'a " title')),
+    'result'  =>  '<a title="a &quot; title"></a>'
+  ),
+  array(
+    'params'  =>  array('a', array('title' => 'a <b> title')),
+    'result'  =>  '<a title="a &lt;b&gt; title"></a>'
   ),
   /**
    * Elements with parameters and content
