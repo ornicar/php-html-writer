@@ -3,13 +3,13 @@
 /**
  * Simple PHP HTML Writer
  *
- * @tutorial  http://github.com/ornicar/php-html-writer/blob/master/README.markdown
+ * @link      http://github.com/ornicar/php-html-writer
  * @version   1.0
  * @author    Thibault Duplessis <thibault.duplessis at gmail dot com>
  * @license   MIT License
  *
- * Website: http://github.com/ornicar/php-html-writer
- * Tickets: http://github.com/ornicar/php-html-writer/issues
+ * Documentation: http://github.com/ornicar/php-html-writer/blob/master/README.markdown
+ * Tickets:       http://github.com/ornicar/php-html-writer/issues
  */
 
 require_once(dirname(__FILE__).'/phpHtmlWriterElement.php');
@@ -225,11 +225,17 @@ class phpHtmlWriter
     list($tag, $attrs) = $this->getCssExpressionParser()->parse($cssExpression);
 
     // merge with the additional HTML attributes passed by the css expression as inline attributes
-    $attrs = $this->mergeAttributes($attrs, $this->getAttributeStringParser()->parse($cssExpression));
-
+    if(strpos($cssExpression, ' '))
+    {
+      $attrs = $this->mergeAttributes($attrs, $this->getAttributeStringParser()->parse($cssExpression));
+    }
+    
     // merge with the additional HTML attributes passed by the attributes array
-    $attrs = $this->mergeAttributes($attrs, $this->getAttributeArrayParser()->parse($attributes));
-
+    if(!empty($attributes))
+    {
+      $attrs = $this->mergeAttributes($attrs, $this->getAttributeArrayParser()->parse($attributes));
+    }
+    
     return array($tag, $attrs);
   }
 
