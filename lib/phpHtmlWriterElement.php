@@ -169,9 +169,7 @@ class phpHtmlWriterElement
 
     foreach($this->getAttributes() as $name => $value)
     {
-      $escapedValue = htmlentities($value, ENT_COMPAT, $this->encoding);
-      
-      $string .= ' '.$name.'="'.$escapedValue.'"';
+      $string .= ' '.$name.'="'.htmlentities($value, ENT_COMPAT, $this->encoding).'"';
     }
 
     return $string;
