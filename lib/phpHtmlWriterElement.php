@@ -32,6 +32,12 @@ class phpHtmlWriterElement
   protected $encoding;
 
   /**
+   * is a self-closing element
+   * @var bool
+   */
+  protected $isSelfClosing;
+
+  /**
    * from the W3 Schools reference site: http://www.w3schools.com/tags/ref_byfunc.asp
    * @var array
    */
@@ -39,10 +45,11 @@ class phpHtmlWriterElement
 
   public function __construct($tag, array $attributes = array(), $content = '', $encoding = 'UTF-8')
   {
-    $this->tag        = $tag;
-    $this->attributes = $attributes;
-    $this->content    = (string) $content;
-    $this->encoding   = $encoding;
+    $this->tag            = $tag;
+    $this->attributes     = $attributes;
+    $this->content        = (string) $content;
+    $this->encoding       = $encoding;
+    $this->isSelfClosing  = in_array($this->tag , self::$selfClosingTags);
 
     if(empty($this->tag))
     {
@@ -110,7 +117,7 @@ class phpHtmlWriterElement
    */
   public function isSelfClosing()
   {
-    return in_array($this->getTag(), self::$selfClosingTags);
+    return $this->isSelfClosing;
   }
 
   /**
@@ -175,6 +182,9 @@ class phpHtmlWriterElement
     return $string;
   }
 
+  /**
+   * @see phpHtmlWriterElement::render()
+   */
   public function __toString()
   {
     return $this->render();
