@@ -12,10 +12,9 @@
  * Tickets: http://github.com/ornicar/php-html-writer/issues
  */
 
-require_once(dirname(__FILE__).'/phpHtmlWriterConfigurable.php');
 require_once(dirname(__FILE__).'/phpHtmlWriterElement.php');
 
-class phpHtmlWriter extends phpHtmlWriterConfigurable
+class phpHtmlWriter
 {
   /**
    * @var phpHtmlWriterCssExpressionParser  the CSS expression parser instance
@@ -45,7 +44,7 @@ class phpHtmlWriter extends phpHtmlWriterConfigurable
    */
   public function __construct(array $options = array())
   {
-    $this->configure($options);
+    $this->options = array_merge($this->options, $options);
   }
 
   /**
@@ -89,7 +88,7 @@ class phpHtmlWriter extends phpHtmlWriterConfigurable
      * element object that can be rendered with __toString()
      * @var phpHtmlWriterElement
      */
-    $element = new $this->options['element_class']($tag, $attrs, $content);
+    $element = new $this->options['element_class']($tag, $attrs, $content, $this->options['encoding']);
 
     return $element->render();
   }
@@ -121,7 +120,7 @@ class phpHtmlWriter extends phpHtmlWriterConfigurable
      * element object that can be rendered with __toString()
      * @var phpHtmlWriterElement
      */
-    $element = new $this->options['element_class']($tag, $attrs);
+    $element = new $this->options['element_class']($tag, $attrs, null, $this->options['encoding']);
 
     return $element->renderOpen();
   }
@@ -144,7 +143,7 @@ class phpHtmlWriter extends phpHtmlWriterConfigurable
      * element object that can be rendered with __toString()
      * @var phpHtmlWriterElement
      */
-    $element = new $this->options['element_class']($tag);
+    $element = new $this->options['element_class']($tag, array(), null, $this->options['encoding']);
 
     return $element->renderClose();
   }
