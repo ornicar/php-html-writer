@@ -1,3 +1,7 @@
+v1.3 - 2010-04-10
+
+ * move JSON support to phpHtmlWriterElement
+
 v1.2 - 2010-04-10
 
  * support classes array

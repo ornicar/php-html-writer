@@ -4,7 +4,7 @@
  * Simple PHP HTML Writer
  *
  * @link      http://github.com/ornicar/php-html-writer
- * @version   1.2
+ * @version   1.3
  * @author    Thibault Duplessis <thibault.duplessis at gmail dot com>
  * @license   MIT License
  *
