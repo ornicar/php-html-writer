@@ -23,6 +23,12 @@ class phpHtmlWriterAttributeArrayParser
       return $attributes;
     }
 
+    // support array of classes
+    if(isset($attributes['class']) && is_array($attributes['class']))
+    {
+      $attributes['class'] = implode(' ', $attributes['class']);
+    }
+
     foreach($attributes as $name => $value)
     {
       if('json' !== $name)
@@ -31,6 +37,7 @@ class phpHtmlWriterAttributeArrayParser
       }
     }
 
+    // support JSON
     if(array_key_exists('json', $attributes))
     {
       $attributes = $this->parseJsonAttribute($attributes);

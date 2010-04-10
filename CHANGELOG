@@ -1,9 +1,13 @@
+v1.2 - 2010-04-10
+
+ * support classes array
+
 v1.1 - 2010-04-10
 
- * Escape HTML attributes
- * Add JSON support
- * Improve performance
+ * escape HTML attributes
+ * add JSON support
+ * improve performance
 
 v1.0 - 2010-04-09
 
- * Create initial 1.0 version
+ * create initial 1.0 version
