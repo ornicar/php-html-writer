@@ -185,7 +185,7 @@ You can inject a new CSS expression parser instance with the ->setCssExpressionP
 
 #### Inline attribute parser
 
-Responsible for parsing inline attributes like "rel=noffolow".
+Responsible for parsing inline attributes like "rel=nofollow".
 phpHtmlWriterAttributeStringParser is used to parse inline attributes.
 You can inject a new inline attributes parser instance with the ->setAttributeStringParser() method:
 
@@ -200,7 +200,7 @@ You can inject a new inline attributes parser instance with the ->setAttributeSt
 
 #### Array attribute parser
 
-Responsible for parsing array attributes like array("rel"=>"noffolow").
+Responsible for parsing array attributes like array("rel"=>"nofollow").
 phpHtmlWriterAttributeArrayParser is used to parse array attributes.
 You can inject a new array attributes parser instance with the ->setAttributeArrayParser() method:
 
