@@ -6,33 +6,33 @@ require_once dirname(__FILE__).'/phpHtmlWriterTestHelper.php';
 $t = new lime_test(3);
 
 $view = new phpHtmlWriter();
-$nbTests  = 50;
+$nbTests  = 500;
 $nbTags   = 10;
 
-$t->is($view->tag('div#my_id', 'content'), '<div id="my_id">content</div>', 'Writer is ready');
+$t->is($view->tag('div'), '<div></div>', 'Writer is ready');
 
-$start = microtime(true);
+$startTime  = microtime(true);
 
 for($iterator=0; $iterator<$nbTests; ++$iterator)
 {
   $view->tag('div#my_id'.$iterator,
     $view->tag('ul.my_class'.$iterator,
-      $view->tag('li', 'some content '.$iterator).
-      $view->tag('li',
+      $view->tag('li.li_class', 'some content '.$iterator).
+      $view->tag('li.li_class',
         $view->tag('input value="my value '.$iterator.'"')
       ).
-      $view->tag('li',
-        $view->tag('p', 'some content')
+      $view->tag('li', array('id' => 'my_id'),
+        $view->tag('p', array('lang' => 'fr'), 'du contenu')
       )
     ).
-    $view->open('div#my_id.my_class').
+    $view->open('div').
       'some text'.
       $view->tag('br').
     $view->close('div')
   );
 }
 
-$time = 1000 * (microtime(true) - $start);
+$time = 1000 * (microtime(true) - $startTime);
 
 $t->pass(sprintf(
   'Time to render %d nested tags: %0.2f milliseconds',
@@ -41,6 +41,6 @@ $t->pass(sprintf(
 ));
 
 $t->pass(sprintf(
-  'Time per tag: %0.2f milliseconds',
+  'Time per tag: %0.3f milliseconds',
   $time/($nbTests * $nbTags)
 ));
