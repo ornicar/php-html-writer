@@ -171,15 +171,34 @@ class phpHtmlWriterElement
    */
   public function getAttributesAsString()
   {
-    // convert options array to string
-    $string = '';
+    $attributes = $this->getAttributes();
+    $string     = '';
 
-    foreach($this->getAttributes() as $name => $value)
+    // support JSON
+    if(array_key_exists('json', $attributes))
+    {
+      $attributes = $this->parseJsonAttribute($attributes);
+    }
+
+    foreach($attributes as $name => $value)
     {
       $string .= ' '.$name.'="'.htmlentities($value, ENT_COMPAT, $this->encoding).'"';
     }
 
     return $string;
+  }
+
+  protected function parseJsonAttribute(array $attributes)
+  {
+    $json = json_encode($attributes['json']);
+
+    $attributes['class'] = isset($attributes['class'])
+    ? $attributes['class'].' '.$json
+    : $json;
+
+    unset($attributes['json']);
+
+    return $attributes;
   }
 
   /**

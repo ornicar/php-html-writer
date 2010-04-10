@@ -104,7 +104,7 @@ $tests = array(
   ),
   array(
     'params'  =>  array(' p ', array('id' => ' my_id ', 'class' => ' my_class another_class ')),
-    'result'  =>  '<p id="my_id" class="my_class another_class"></p>'
+    'result'  =>  '<p id=" my_id " class=" my_class another_class "></p>'
   ),
   array(
     'params'  =>  array('a', array('href' => 'http://diem-project.org/')),
@@ -130,7 +130,7 @@ $tests = array(
    */
   array(
     'params'  =>  array('div', array('id' => ' my_id ', 'class' => ' my_class another_class '), 'tag content'),
-    'result'  =>  '<div id="my_id" class="my_class another_class">tag content</div>'
+    'result'  =>  '<div id=" my_id " class=" my_class another_class ">tag content</div>'
   )
   /**
    * Elements with id, classes and parameters
