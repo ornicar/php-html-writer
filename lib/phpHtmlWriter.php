@@ -75,20 +75,13 @@ class phpHtmlWriter
       $attributes = array();
     }
 
-    // get the tag and attributes from the CSS expression
-    list($tag, $attrs) = $this->getCssExpressionParser()->parse($cssExpression);
-
-    // merge with the additional HTML attributes passed by the css expression as inline attributes
-    $attrs = $this->mergeAttributes($attrs, $this->getAttributeStringParser()->parse($cssExpression));
-
-    // merge with the additional HTML attributes passed by the attributes array
-    $attrs = $this->mergeAttributes($attrs, $this->getAttributeArrayParser()->parse($attributes));
+    list($tag, $attributes) = $this->parseTagAndAttributes($cssExpression, $attributes);
 
     /**
-     * element object that can be rendered with __toString()
+     * create an element instance
      * @var phpHtmlWriterElement
      */
-    $element = new $this->options['element_class']($tag, $attrs, $content, $this->options['encoding']);
+    $element = new $this->options['element_class']($tag, $attributes, $content, $this->options['encoding']);
 
     return $element->render();
   }
@@ -107,20 +100,13 @@ class phpHtmlWriter
    */
   public function open($cssExpression, array $attributes = array())
   {
-    // get the tag and attributes from the CSS expression
-    list($tag, $attrs) = $this->getCssExpressionParser()->parse($cssExpression);
-
-    // merge with the additional HTML attributes passed by the css expression as inline attributes
-    $attrs = $this->mergeAttributes($attrs, $this->getAttributeStringParser()->parse($cssExpression));
-
-    // merge with the additional HTML attributes passed by the attributes array
-    $attrs = $this->mergeAttributes($attrs, $this->getAttributeArrayParser()->parse($attributes));
-
+    list($tag, $attributes) = $this->parseTagAndAttributes($cssExpression, $attributes);
+    
     /**
-     * element object that can be rendered with __toString()
+     * create an element instance
      * @var phpHtmlWriterElement
      */
-    $element = new $this->options['element_class']($tag, $attrs, null, $this->options['encoding']);
+    $element = new $this->options['element_class']($tag, $attributes, null, $this->options['encoding']);
 
     return $element->renderOpen();
   }
@@ -138,9 +124,9 @@ class phpHtmlWriter
   {
     // remove eventual css expressions or inline attributes
     list($tag, $attributes) = $this->getCssExpressionParser()->parse($tagName);
-    
+
     /**
-     * element object that can be rendered with __toString()
+     * create an element instance
      * @var phpHtmlWriterElement
      */
     $element = new $this->options['element_class']($tag, array(), null, $this->options['encoding']);
@@ -226,6 +212,27 @@ class phpHtmlWriter
     $this->attributeArrayParser = $attributeArrayParser;
   }
 
+  /**
+   * Get HTML tag and attributes from a CSS expression and an attribute array
+   *
+   * @param   string  $cssExpression
+   * @param   array   $attributes
+   * @return  array   array(string HTML tag, array HTML attributes)
+   */
+  protected function parseTagAndAttributes($cssExpression, $attributes)
+  {
+    // get the tag and attributes from the CSS expression
+    list($tag, $attrs) = $this->getCssExpressionParser()->parse($cssExpression);
+
+    // merge with the additional HTML attributes passed by the css expression as inline attributes
+    $attrs = $this->mergeAttributes($attrs, $this->getAttributeStringParser()->parse($cssExpression));
+
+    // merge with the additional HTML attributes passed by the attributes array
+    $attrs = $this->mergeAttributes($attrs, $this->getAttributeArrayParser()->parse($attributes));
+
+    return array($tag, $attrs);
+  }
+
   protected function mergeAttributes(array $attributes1, array $attributes2)
   {
     // manually merge the class attribute
@@ -240,9 +247,9 @@ class phpHtmlWriter
 
   protected function mergeClasses($classes1, $classes2)
   {
-    return implode(' ', array_unique(array_map('trim', array_merge(
+    return implode(' ', array_unique(array_merge(
       str_word_count($classes1, 1, '0123456789-_'),
       str_word_count($classes2, 1, '0123456789-_')
-    ))));
+    )));
   }
 }

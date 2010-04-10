@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Responsible to parse user inline attributes
+ * Responsible to parse user inline attributes like "rel=nofollow"
  *
  * @author    Thibault Duplessis <thibault.duplessis at gmail dot com>
  * @license   MIT License
