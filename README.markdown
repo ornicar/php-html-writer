@@ -132,6 +132,7 @@ All code is fully unit tested. To run tests on your server, from a CLI, run
 
 You should see:
 
+    AttributeArrayParserTest.............................................ok
     AttributeStringParserTest............................................ok
     CssExpressionParserTest..............................................ok
     HelperTest...........................................................ok
@@ -141,7 +142,7 @@ You should see:
     WriterTagJsonTest....................................................ok
     WriterTagTest........................................................ok
      All tests successful.
-     Files=8, Tests=156
+     Files=9, Tests=162
 
 ## Customization
 
