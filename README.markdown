@@ -130,6 +130,19 @@ All code is fully unit tested. To run tests on your server, from a CLI, run
 
     php /path/to/php-html-writer/prove.php
 
+You should see:
+
+    AttributeStringParserTest............................................ok
+    CssExpressionParserTest..............................................ok
+    HelperTest...........................................................ok
+    PerformanceTest......................................................ok
+    WriterCloseTest......................................................ok
+    WriterOpenTest.......................................................ok
+    WriterTagJsonTest....................................................ok
+    WriterTagTest........................................................ok
+     All tests successful.
+     Files=8, Tests=156
+
 ## Customization
 
 PHP HTML Writer is very extensible. You can replace easily each part of the implementation.
