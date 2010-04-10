@@ -157,7 +157,7 @@ class phpHtmlWriter
   {
     if(null === $this->cssExpressionParser)
     {
-      require_once(dirname(__FILE__).'/phpHtmlWriterCssExpressionParser.php');
+      require_once(dirname(__FILE__).'/parser/phpHtmlWriterCssExpressionParser.php');
       $this->cssExpressionParser = new phpHtmlWriterCssExpressionParser();
     }
 
@@ -183,10 +183,8 @@ class phpHtmlWriter
   {
     if(null === $this->attributeStringParser)
     {
-      require_once(dirname(__FILE__).'/phpHtmlWriterAttributeStringParser.php');
-      $this->attributeStringParser = new phpHtmlWriterAttributeStringParser(array(
-        'encoding' => $this->options['encoding']
-      ));
+      require_once(dirname(__FILE__).'/parser/phpHtmlWriterAttributeStringParser.php');
+      $this->attributeStringParser = new phpHtmlWriterAttributeStringParser();
     }
 
     return $this->attributeStringParser;
@@ -211,10 +209,8 @@ class phpHtmlWriter
   {
     if(null === $this->attributeArrayParser)
     {
-      require_once(dirname(__FILE__).'/phpHtmlWriterAttributeArrayParser.php');
-      $this->attributeArrayParser = new phpHtmlWriterAttributeArrayParser(array(
-        'encoding' => $this->options['encoding']
-      ));
+      require_once(dirname(__FILE__).'/parser/phpHtmlWriterAttributeArrayParser.php');
+      $this->attributeArrayParser = new phpHtmlWriterAttributeArrayParser();
     }
 
     return $this->attributeArrayParser;
