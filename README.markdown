@@ -128,7 +128,7 @@ The phpHtmlWriterHelper.php file contains predefined shortcuts functions.
 
 All code is fully unit tested. To run tests on your server, from a CLI, run
 
-    php /path/to/php-html-writer/test/prove.php
+    php /path/to/php-html-writer/prove.php
 
 ## Customization
 

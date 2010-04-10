@@ -1,6 +1,6 @@
 <?php
-require_once dirname(__FILE__).'/../../vendor/lime.php';
-require_once dirname(__FILE__).'/../../lib/phpHtmlWriter.php';
+require_once dirname(__FILE__).'/vendor/lime.php';
+require_once dirname(__FILE__).'/../lib/phpHtmlWriter.php';
 require_once dirname(__FILE__).'/phpHtmlWriterTestHelper.php';
 
 $tests = array(
@@ -9,7 +9,7 @@ $tests = array(
    */
   array(                          // one test
     'params'  =>  array('div'),   // ->tag() parameters
-    'result'  =>  '<div>'         // expected result
+    'result'  =>  '</div>'        // expected result
   ),
   /**
    *  invalid expressions
@@ -43,110 +43,110 @@ $tests = array(
    */
   array(
     'params'  =>  array('p#my_id'),
-    'result'  =>  '<p id="my_id">'
+    'result'  =>  '</p>'
   ),
   array(
     'params'  =>  array('p.my_class'),
-    'result'  =>  '<p class="my_class">'
+    'result'  =>  '</p>'
   ),
   array(
     'params'  =>  array('p.my_class.another_class'),
-    'result'  =>  '<p class="my_class another_class">'
+    'result'  =>  '</p>'
   ),
   array(
     'params'  =>  array('p#my_id.my_class.another_class'),
-    'result'  =>  '<p id="my_id" class="my_class another_class">'
+    'result'  =>  '</p>'
   ),
   array(
     'params'  =>  array(' p#my_id.my_class.another_class '),
-    'result'  =>  '<p id="my_id" class="my_class another_class">'
+    'result'  =>  '</p>'
   ),
   /**
    * Elements with parameters
    */
   array(
     'params'  =>  array('div', array('id' => 'my_id')),
-    'result'  =>  '<div id="my_id">'
+    'result'  =>  '</div>'
   ),
   array(
     'params'  =>  array('p', array('class' => 'my_class')),
-    'result'  =>  '<p class="my_class">'
+    'result'  =>  '</p>'
   ),
   array(
     'params'  =>  array('p', array('class' => 'my_class another_class')),
-    'result'  =>  '<p class="my_class another_class">'
+    'result'  =>  '</p>'
   ),
   array(
     'params'  =>  array('p', array('id' => 'my_id', 'class' => 'my_class another_class')),
-    'result'  =>  '<p id="my_id" class="my_class another_class">'
+    'result'  =>  '</p>'
   ),
   array(
     'params'  =>  array(' p ', array('id' => ' my_id ', 'class' => ' my_class another_class ')),
-    'result'  =>  '<p id="my_id" class="my_class another_class">'
+    'result'  =>  '</p>'
   ),
   array(
     'params'  =>  array('a', array('href' => 'http://diem-project.org/')),
-    'result'  =>  '<a href="http://diem-project.org/">'
+    'result'  =>  '</a>'
   ),
   array(
     'params'  =>  array('a#my_id.my_class.another_class', array('href' => 'http://diem-project.org/')),
-    'result'  =>  '<a id="my_id" class="my_class another_class" href="http://diem-project.org/">'
+    'result'  =>  '</a>'
   ),
   /**
    * Elements with parameters and content
    */
   array(
     'params'  =>  array('div', array('id' => ' my_id ', 'class' => ' my_class another_class ')),
-    'result'  =>  '<div id="my_id" class="my_class another_class">'
+    'result'  =>  '</div>'
   )
   /**
    * Elements with id, classes and parameters
    */,
   array(
     'params'  =>  array('a#my_id.my_class.another_class', array('href' => 'http://diem-project.org/')),
-    'result'  =>  '<a id="my_id" class="my_class another_class" href="http://diem-project.org/">'
+    'result'  =>  '</a>'
   ),
   array(
     'params'  =>  array('a#my_id.my_class.another_class', array('id' => 'changed_id', 'href' => 'http://diem-project.org/')),
-    'result'  =>  '<a id="changed_id" class="my_class another_class" href="http://diem-project.org/">'
+    'result'  =>  '</a>'
   ),
   array(
     'params'  =>  array('a#my_id.my_class.another_class', array('class' => 'added_class other_added_class', 'href' => 'http://diem-project.org/')),
-    'result'  =>  '<a id="my_id" class="my_class another_class added_class other_added_class" href="http://diem-project.org/">'
+    'result'  =>  '</a>'
   ),
   array(
     'params'  =>  array('a#my_id.my_class.another_class', array('class' => 'added_class other_added_class my_class', 'href' => 'http://diem-project.org/', 'title' => 'my title')),
-    'result'  =>  '<a id="my_id" class="my_class another_class added_class other_added_class" href="http://diem-project.org/" title="my title">'
+    'result'  =>  '</a>'
   ),
   /**
    * Elements inline attribute
    */
   array(
     'params'  =>  array('a href="http://diem-project.org/"'),
-    'result'  =>  '<a href="http://diem-project.org/">'
+    'result'  =>  '</a>'
   ),
   array(
     'params'  =>  array('a class=my_class'),
-    'result'  =>  '<a class="my_class">'
+    'result'  =>  '</a>'
   ),
   array(
     'params'  =>  array('a#my_id.my_class.another_class href="http://diem-project.org/"'),
-    'result'  =>  '<a id="my_id" class="my_class another_class" href="http://diem-project.org/">'
+    'result'  =>  '</a>'
   ),
   array(
     'params'  =>  array('a#my_id.my_class.another_class id=changed_id href="http://diem-project.org/"'),
-    'result'  =>  '<a id="changed_id" class="my_class another_class" href="http://diem-project.org/">'
+    'result'  =>  '</a>'
   ),
   array(
     'params'  =>  array('a#my_id.my_class.another_class class="added_class other_added_class" href="http://diem-project.org/"'),
-    'result'  =>  '<a id="my_id" class="my_class another_class added_class other_added_class" href="http://diem-project.org/">'
+    'result'  =>  '</a>'
   ),
   array(
     'params'  =>  array('a#my_id.my_class.another_class class="added_class other_added_class my_class" href="http://diem-project.org/" title="my title"'),
-    'result'  =>  '<a id="my_id" class="my_class another_class added_class other_added_class" href="http://diem-project.org/" title="my title">'
+    'result'  =>  '</a>'
   )
 );
 
 $t = new lime_test(count($tests));
 
-php_html_writer_run_tests($t, $tests, array(new phpHtmlWriter(), 'open'));
+php_html_writer_run_tests($t, $tests, array(new phpHtmlWriter(), 'close'));

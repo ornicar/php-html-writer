@@ -1,6 +1,6 @@
 <?php
-require_once dirname(__FILE__).'/../../vendor/lime.php';
-require_once dirname(__FILE__).'/../../lib/phpHtmlWriter.php';
+require_once dirname(__FILE__).'/vendor/lime.php';
+require_once dirname(__FILE__).'/../lib/phpHtmlWriter.php';
 require_once dirname(__FILE__).'/phpHtmlWriterTestHelper.php';
 
 $tests = array(
