@@ -73,6 +73,10 @@ $tests = array(
     'result'  =>  '<div>tag content</div>'
   ),
   array(
+    'params'  =>  array('div', '0'),
+    'result'  =>  '<div>0</div>'
+  ),
+  array(
     'params'  =>  array('input', 'tag content'),
     'throws'  =>  'InvalidArgumentException'
   ),

@@ -41,6 +41,8 @@ class phpHtmlWriter
 
   /**
    * Instanciate a new HTML Writer
+   *
+   * @param   array $options
    */
   public function __construct(array $options = array())
   {
@@ -69,7 +71,7 @@ class phpHtmlWriter
      * ->tag('div', 'content')
      * ->tag('div', array('id' => 'an_id'), 'content')
      */
-    if(empty($content) && !empty($attributes) && !is_array($attributes))
+    if(empty($content) && (!empty($attributes) || !is_array($attributes)) && !is_array($attributes))
     {
       $content    = $attributes;
       $attributes = array();
